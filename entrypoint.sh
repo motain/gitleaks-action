@@ -1,23 +1,24 @@
 #!/bin/bash
 
 INPUT_CONFIG_PATH="$1"
-CONFIG=""
+# set the default gitleaks rules provided by this action
+CONFIG=" --config-path=/gitleaks.toml"
 
 # check if a custom config have been provided
 if [ -f "$GITHUB_WORKSPACE/$INPUT_CONFIG_PATH" ]; then
-  CONFIG=" --additional-config=$GITHUB_WORKSPACE/$INPUT_CONFIG_PATH"
+  CONFIG="$CONFIG --additional-config=$GITHUB_WORKSPACE/$INPUT_CONFIG_PATH"
 fi
 
 echo running gitleaks "$(gitleaks --version) with the following command👇"
 
 if [ "$GITHUB_EVENT_NAME" = "pull_request" ]
 then 
-  git --git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" remotes/origin/$GITHUB_BASE_REF... > commit_list.txt
-  echo gitleaks --path=$GITHUB_WORKSPACE --verbose --redact --commits-file=commit_list.txt $CONFIG
-  CAPTURE_OUTPUT=$(gitleaks --path=$GITHUB_WORKSPACE --verbose --redact --commits-file=commit_list.txt $CONFIG)
+  git --git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" "remotes/origin/$GITHUB_BASE_REF"... > commit_list.txt
+  echo gitleaks --path="$GITHUB_WORKSPACE" --verbose --redact --commits-file=commit_list.txt "$CONFIG"
+  CAPTURE_OUTPUT=$(gitleaks --path="$GITHUB_WORKSPACE" --verbose --redact --commits-file=commit_list.txt "$CONFIG")
 else
-  echo gitleaks --path=$GITHUB_WORKSPACE --verbose --report=gitleaks-output.json --redact $CONFIG
-  CAPTURE_OUTPUT=$(gitleaks --path=$GITHUB_WORKSPACE --verbose --report=gitleaks-output.json --redact $CONFIG)
+  echo gitleaks --path="$GITHUB_WORKSPACE" --verbose --report=gitleaks-output.json --redact "$CONFIG"
+  CAPTURE_OUTPUT=$(gitleaks --path="$GITHUB_WORKSPACE" --verbose --report=gitleaks-output.json --redact "$CONFIG")
 fi
 
 if [ $? -eq 1 ]
