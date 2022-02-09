@@ -8,4 +8,5 @@ LABEL "repository"="https://github.com/zricethezav/gitleaks-action"
 
 ADD entrypoint.sh /entrypoint.sh
 ADD gitleaks.toml /gitleaks.toml
+USER root
 ENTRYPOINT ["/entrypoint.sh"]
