@@ -3,6 +3,9 @@
 INPUT_CONFIG_PATH="$1"
 CONFIG=" --config-path=/gitleaks.toml"
 
+# generate empty report file
+touch /gitleaks-output.json
+
 # check if a custom config have been provided
 if [ -f "$GITHUB_WORKSPACE/$INPUT_CONFIG_PATH" ]; then
   CONFIG="$CONFIG --additional-config=$GITHUB_WORKSPACE/$INPUT_CONFIG_PATH"
