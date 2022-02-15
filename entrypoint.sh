@@ -15,9 +15,9 @@ echo running gitleaks "$(gitleaks version) with the following command👇"
 
 if [ "$GITHUB_EVENT_NAME" = "pull_request" ]
 then 
-  git --git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" remotes/origin/$GITHUB_BASE_REF... > commit_list.txt
-  echo gitleaks detect --source=$GITHUB_WORKSPACE --verbose --redact --log-opts="--git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" remotes/origin/$GITHUB_BASE_REF..." $CONFIG
-  CAPTURE_OUTPUT=$(gitleaks detect --source=$GITHUB_WORKSPACE --verbose --redact --log-opts="--git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" remotes/origin/$GITHUB_BASE_REF..." $CONFIG)
+  #--log-opts="--git-dir="$GITHUB_WORKSPACE/.git" log --left-right --cherry-pick --pretty=format:"%H" remotes/origin/$GITHUB_BASE_REF..."
+  echo gitleaks detect --source=$GITHUB_WORKSPACE --verbose --redact $CONFIG
+  CAPTURE_OUTPUT=$(gitleaks detect --source=$GITHUB_WORKSPACE --verbose --redact $CONFIG)
 else
   echo detect --sourc=$GITHUB_WORKSPACE --verbose --report=gitleaks-output.json --redact $CONFIG
   CAPTURE_OUTPUT=$(gitleaks detect --source=$GITHUB_WORKSPACE --verbose --report=gitleaks-output.json --redact $CONFIG)
