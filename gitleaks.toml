@@ -178,7 +178,7 @@ regex = '''(p8e-)(?i)[a-z0-9]{32}'''
 [[rules]]
 id = "alibaba-access-key-id"
 description = "Alibaba AccessKey ID"
-regex = '''(LTAI)(?i)[a-z0-9]{20}'''
+regex = '''([^0-9a-z]|^)(?P<secret>(LTAI)(?i)[a-z0-9]{20})([^0-9a-z]|$)'''
 
 [[rules]]
 id = "alibaba-secret-key"
